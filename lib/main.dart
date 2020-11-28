@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'quiz_brain.dart';
+
 void main() => runApp(Quizzler());
 
 class Quizzler extends StatelessWidget {
@@ -25,16 +27,9 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Icon> scoreKeeper = [
-    Icon(
-      Icons.check,
-      color: Colors.green,
-    ),
-    Icon(
-      Icons.close,
-      color: Colors.red,
-    ),
-  ];
+  List<Icon> scoreKeeper = [];
+  QuizBrain quizBrain = QuizBrain();
+  int questionNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +43,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                quizBrain.getQuestionText(questionNumber),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -72,7 +67,15 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
+                bool correctAnswer =
+                    quizBrain.getQuestionAnswer(questionNumber);
+                if (correctAnswer == true) {
+                  print('User got it right!');
+                } else {
+                  print('User got it wrong!');
+                }
                 setState(() {
+                  questionNumber += 1;
                   scoreKeeper.add(
                     Icon(Icons.check, color: Colors.green),
                   );
@@ -94,6 +97,14 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
+                questionNumber += 1;
+                bool correctAnswer =
+                    quizBrain.getQuestionAnswer(questionNumber);
+                if (correctAnswer == false) {
+                  print('User got it right!');
+                } else {
+                  print('User got it wrong!');
+                }
                 setState(() {
                   scoreKeeper.add(
                     Icon(Icons.close, color: Colors.red),
